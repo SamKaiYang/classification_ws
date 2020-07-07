@@ -1,0 +1,7 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~yolo_z" : \b [double] A double Work_Height min: -10.0, default: 4.35, max: 12.0
+- \b "~down_z" : \b [double] A double parameter min: -10.0, default: 0.0, max: 20.0
+

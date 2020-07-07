@@ -1,0 +1,8 @@
+prefix=/home/iclab/Documents/classification_ws/devel
+
+Name: ROS_Socket
+Description: Description of ROS_Socket
+Version: 0.0.0
+Cflags: -I/home/iclab/Documents/classification_ws/devel/include -I/home/iclab/Documents/classification_ws/src/ROS_Socket/include
+Libs: -L${prefix}/lib -lROS_Socket
+Requires: roscpp rospy std_msgs message_runtime

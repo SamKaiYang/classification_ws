@@ -1,0 +1,14 @@
+<launch>
+    <arg name="network_param_file"         default="$(find darknet_ros)/config/yolov4.yaml"/>
+    <!-- Include main launch file -->
+    <include file="$(find darknet_ros)/launch/darknet_ros.launch">
+    <arg name="network_param_file"    value="$(arg network_param_file)"/>
+    </include>
+
+    <node name="pcl" pkg="disposing_vision" type="nv_pcl" />
+
+    <!-- <node name="ros_socket" pkg="ROS_Socket" type="Hiwin_RT605_Socket.py" output="screen"/> -->
+
+    <node name="ros_strategy" pkg="ROS_Socket" type="Hiwin_Strategy_Classificaton.py" output="screen"/>
+
+</launch>

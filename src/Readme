@@ -1,0 +1,10 @@
+Realsense包需要flycapture
+git clone https://github.com/RhobanDeps/flycapture.git
+cd flycapture
+sudo sh install_flycapture.sh
+
+
+Run 法向量測試
+roslaunch realsense2_camera rs_rgbd.launch align_depth:=true filters:=pointcloud 
+rosrun disposing_vision node
+rviz -> Open Config default.rviz

@@ -1,0 +1,1 @@
+/home/iclab/Documents/classification_ws/catkin_workspace/devel/.private/cv_bridge/lib/pkgconfig/cv_bridge.pc

@@ -1,0 +1,10 @@
+(cl:defpackage getcalue-srv
+  (:use )
+  (:export
+   "SELECTIVE_SEARCH_SRV"
+   "<SELECTIVE_SEARCH_SRV-REQUEST>"
+   "SELECTIVE_SEARCH_SRV-REQUEST"
+   "<SELECTIVE_SEARCH_SRV-RESPONSE>"
+   "SELECTIVE_SEARCH_SRV-RESPONSE"
+  ))
+

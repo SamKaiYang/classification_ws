@@ -1,0 +1,8 @@
+prefix=/home/iclab/Documents/classification_ws/install
+
+Name: raspberry
+Description: Description of raspberry
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

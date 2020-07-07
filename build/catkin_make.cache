@@ -1,0 +1,2 @@
+ROS_Socket:darknet_ros/darknet_ros:darknet_ros/darknet_ros_msgs:disposing_vision:getcalue:raspberry:rs_d435i/get_rs_image:rs_d435i/realsense-ros/realsense2_camera:rs_d435i/realsense-ros/realsense2_description:rs_d435i/test_rs_img:usb_cam
+-DCATKIN_DEVEL_PREFIX=/home/iclab/Documents/classification_ws/devel -DCMAKE_INSTALL_PREFIX=/home/iclab/Documents/classification_ws/install -G Unix Makefiles

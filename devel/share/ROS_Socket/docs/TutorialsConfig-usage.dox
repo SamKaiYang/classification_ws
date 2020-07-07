@@ -1,0 +1,8 @@
+\subsubsection usage Usage
+\verbatim
+<node name="strategy" pkg="ROS_Socket" type="strategy">
+  <param name="yolo_z" type="double" value="4.35" />
+  <param name="down_z" type="double" value="0.0" />
+</node>
+\endverbatim
+

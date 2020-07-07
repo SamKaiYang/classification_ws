@@ -1,0 +1,7 @@
+<launch>
+
+    <node name="ros_aspberry_receive" pkg="raspberry" type="get_press_sensor.py" output="screen"/>
+
+    <node name="ros_raspberry_send" pkg="raspberry" type="send_command_1.py" output="screen"/>
+
+</launch>

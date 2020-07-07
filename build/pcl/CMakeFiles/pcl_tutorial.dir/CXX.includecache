@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/iclab/Documents/classification_ws/src/pcl/src/pcl_tutorial.cpp
+pcl/pcl_tutorial.h
+/home/iclab/Documents/classification_ws/src/pcl/src/pcl/pcl_tutorial.h
+

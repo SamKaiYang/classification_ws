@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/iclab/Documents/classification_ws/catkin_workspace/devel/.private/cv_bridge/setup.sh

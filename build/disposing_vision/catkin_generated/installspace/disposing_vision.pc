@@ -1,0 +1,8 @@
+prefix=/home/iclab/Documents/classification_ws/install
+
+Name: disposing_vision
+Description: Description of disposing_vision
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: pcl_conversions pcl_ros roscpp sensor_msgs

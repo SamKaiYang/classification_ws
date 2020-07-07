@@ -1,0 +1,8 @@
+prefix=/home/iclab/Documents/classification_ws/devel
+
+Name: raspberry
+Description: Description of raspberry
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
