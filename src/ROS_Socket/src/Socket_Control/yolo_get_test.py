@@ -31,17 +31,13 @@ obj_num = 0
 Depth_Bridge = CvBridge()
 global Depth_Image
 Depth_Image =  np.zeros((720,1280,1), np.float32)
-#point_a_world = [0,0,0]
-# class vision_point():
-#     def __init__(self,x,y,z):
-#         self.x = x
-#         self.y = y
-#         self.z = z
-# v_pos = vision_point(0,0.08,0.01135)
+
+#物件在影像中位置
 v_pos = Point()
 v_pos.x = 0.003
 v_pos.y = 0.001
 v_pos.z = 0.002
+#取出遮罩範圍參數
 magic_num = Point()
 magic_num.x = 0.035
 magic_num.y = 0.035
@@ -154,7 +150,7 @@ def depth_callback(depth_data):
     Depth_Image = np.array(DI, dtype=np.float32)
 
 def quaternion_to_rotation(point):
-    print(v_pos)
+    #print(v_pos)
     point_a_world_max = calculate_max(point)
     point_a_world_min = calculate_min(point)
     #point_a_world_max = calculate_max(point)
@@ -165,28 +161,51 @@ def quaternion_to_rotation(point):
     if normal.normal_w==0 and normal.normal_x==0 and normal.normal_y==0 and normal.normal_z==0 :
         pass
     else:
+        #物件法向量四元數
         rotation_quaternion = np.asarray([normal.normal_w, normal.normal_x, normal.normal_y, normal.normal_z])
         translation = np.asarray([normal.x, normal.y, normal.z])
-        # 这里用的是UC Berkeley的autolab_core，比较方便吧，当然可以自己写一个fuction来计算，计算公式在https://www.cnblogs.com/flyinggod/p/8144100.html
-        T_qua2rota = RigidTransform(rotation_quaternion, translation)
-        #print(T_qua2rota.rotation)
-
-        # # Test 
-        # # 寫上用四元數表示的orientation和xyz表示的position
-        # orientation = {'y': -0.6971278819736084, 'x': -0.716556549511624, 'z': -0.010016582945017661, 'w': 0.02142651612120239}
-        # position = {'y': -0.26022684372145516, 'x': 0.6453529828252734, 'z': 1.179122068068349}
-        # rotation_quaternion = np.asarray([orientation['w'], orientation['x'], orientation['y'], orientation['z']])
-        # translation = np.asarray([position['x'], position['y'], position['z']])
-        # # 這裡用的是UC Berkeley的autolab_core，比較方便吧，當然可以自己写一个fuction来计算，计算公式在https://www.cnblogs.com/flyinggod/p/8144100.html
+        # 這裡用的是UC Berkeley的autolab_core
         # T_qua2rota = RigidTransform(rotation_quaternion, translation)
-        # #T_qua2rota.rotation
-        # print(T_qua2rota.rotation)
+        # print(T_qua2rota)
+        #自己寫fuction計算 
+        T_qua2rota = quaternion_to_rotation_matrix(rotation_quaternion,translation)
+        #攝影機座標 相對 手臂末端點的旋轉矩陣
+        T_vision2arm = np.asarray([[0,-1,1,-3.5],[1,0,0,7],[0,0,1,13.5],[0,0,0,1]])
+        #攝影機座標乘上轉至手臂末端點的旋轉矩陣
+        T_obj2arm = np.dot(T_qua2rota,T_vision2arm)
+        print(T_obj2arm)
+        Pitch = math.atan2(T_obj2arm[2,1],T_obj2arm[2,2]) *180/math.pi
+        Roll = math.atan2(-T_obj2arm[2,0],math.sqrt(T_obj2arm[2,1]**2+T_obj2arm[2,2]**2)) *180/math.pi
+        Yaw = math.atan2(T_obj2arm[1,0],T_obj2arm[0,0]) *180/math.pi
+        Ang = [Pitch , Roll , Yaw] #手臂夾取物件姿態
+        print("angle:",Ang)
+        x = T_obj2arm[0,3]
+        y = T_obj2arm[1,3]
+        z = T_obj2arm[2,3]
+        pos = [x,y,z]
+        print("position:",pos)
+def quaternion_to_rotation_matrix(quat,trans):
+    q = quat.copy()
+    n = np.dot(q, q)
+    if n < np.finfo(q.dtype).eps:
+        return (np.identity(4))
+    q = q * np.sqrt(2.0 / n)
+    q = np.outer(q, q)
+    rot_matrix = np.array(
+    [[1.0 - q[2, 2] - q[3, 3], q[1, 2] + q[3, 0], q[1, 3] - q[2, 0], trans[0]],
+    [q[1, 2] - q[3, 0], 1.0 - q[1, 1] - q[3, 3], q[2, 3] + q[1, 0], trans[1]],
+    [q[1, 3] + q[2, 0], q[2, 3] - q[1, 0], 1.0 - q[1, 1] - q[2, 2], trans[2]],
+    [0.0, 0.0, 0.0, 1.0]],
+    dtype=q.dtype)
+    #print(rot_matrix)
+    return (rot_matrix)
+
 def calculate_min(point_min):
     pos_min = Point()
     pos_min.x = point_min.x - magic_num.x
     pos_min.y = point_min.y - magic_num.y
     pos_min.z = point_min.z - magic_num.z
-    print(pos_min)
+    #print(pos_min)
     return pos_min
 
 def calculate_max(point_max):
@@ -194,7 +213,7 @@ def calculate_max(point_max):
     pos_max.x = point_max.x + magic_num.x
     pos_max.y = point_max.y + magic_num.y
     pos_max.z = point_max.z + magic_num.z
-    print(pos_max)
+    #print(pos_max)
     return pos_max
 if __name__ == '__main__':
 
@@ -207,7 +226,7 @@ if __name__ == '__main__':
     rospy.Subscriber("/darknet_ros/bounding_boxes",BoundingBoxes,Yolo_callback)
     rospy.Subscriber("/object/pose",PoseStamped,normal_callback)
     rospy.Subscriber("/camera/aligned_depth_to_color/image_raw",Image,depth_callback)
-    
+    #rospy.Subscriber("/camera/aligned_depth_to_color/image_raw",depth_callback)
     #rospy.Subscriber("/object/ROI_array",ROI_array,callback_point)
     #rospy.Subscriber("/object/pose_rpy",PoseStamped,callback_realsense)
     while not rospy.is_shutdown():

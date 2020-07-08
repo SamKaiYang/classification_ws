@@ -4,7 +4,7 @@ import sys
 # sys.path.insert(1, "/usr/local/lib/python3.5/dist-packages/")
 
 sys.path.insert(1, "/home/iclab/.local/lib/python3.6/site-packages/")
-sys.path.insert(2, "/home/iclab/rs_d435i_ws/catkin_workspace/install/lib/python3/dist-packages")
+sys.path.insert(2, "/home/iclab/classification_ws/catkin_workspace/install/lib/python3/dist-packages")
 #pythsys.path.insert(0, '/opt/installer/open_cv/cv_bridge/lib/python3/dist-packages/')
 import rospy
 from sensor_msgs.msg import Image
