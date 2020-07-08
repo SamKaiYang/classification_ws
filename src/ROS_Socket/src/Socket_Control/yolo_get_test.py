@@ -170,7 +170,7 @@ def quaternion_to_rotation(point):
         #自己寫fuction計算 
         T_qua2rota = quaternion_to_rotation_matrix(rotation_quaternion,translation)
         #攝影機座標 相對 手臂末端點的旋轉矩陣
-        T_vision2arm = np.asarray([[0,-1,1,-3.5],[1,0,0,7],[0,0,1,13.5],[0,0,0,1]])
+        T_vision2arm = np.asarray([[0,-1,1,-0.035],[1,0,0,0.07],[0,0,1,0.135],[0,0,0,1]])
         #攝影機座標乘上轉至手臂末端點的旋轉矩陣
         T_obj2arm = np.dot(T_qua2rota,T_vision2arm)
         print(T_obj2arm)
