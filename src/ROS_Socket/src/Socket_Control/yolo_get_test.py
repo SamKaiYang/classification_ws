@@ -169,10 +169,13 @@ def quaternion_to_rotation(point):
         # print(T_qua2rota)
         #自己寫fuction計算 
         T_qua2rota = quaternion_to_rotation_matrix(rotation_quaternion,translation)
-        #攝影機座標 相對 手臂末端點的旋轉矩陣
-        T_vision2arm = np.asarray([[0,-1,1,-0.035],[1,0,0,0.07],[0,0,1,0.135],[0,0,0,1]])
-        #攝影機座標乘上轉至手臂末端點的旋轉矩陣
-        T_obj2arm = np.dot(T_qua2rota,T_vision2arm)
+        #攝影機座標 相對 手臂末端點的旋轉矩陣  x軸轉+90度 x位移 -0.035m y位移 0.07m z位移 0.135  
+        T_vision2end = np.asarray([[0,-1,1,-0.035],[1,0,0,0.07],[0,0,1,0.135],[0,0,0,1]])
+        T_end = np.dot(T_qua2rota,T_vision2end)
+        #末端點 相對 手臂基底的旋轉矩陣 y軸轉+180 z軸轉+90 x位移 0m y位移 0.368m z位移 0.1135m ##以手臂home點為攝影機的手臂視覺位置
+        T_end2_arm = np.asarray([[-1,0,0,-0.035],[0,0,-1,0.368],[0,-1,0,0.1135],[0,0,0,1]])
+        #得出物件在手臂座標系中的齊次轉換矩陣
+        T_obj2arm = np.dot(T_end,T_end2_arm)
         print(T_obj2arm)
         Pitch = math.atan2(T_obj2arm[2,1],T_obj2arm[2,2]) *180/math.pi
         Roll = math.atan2(-T_obj2arm[2,0],math.sqrt(T_obj2arm[2,1]**2+T_obj2arm[2,2]**2)) *180/math.pi
